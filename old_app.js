@@ -59,8 +59,7 @@ document.getElementById('done').addEventListener('click', function (e) {
     });
     for (let day of days) {
         let checkInDate = moment(new Date(day.date + ' ' + day.checkIn));
-		console.log(moment(checkInDate));
-		return;
+		
         let checkOutDate = moment(new Date(day.date + ' ' + day.checkOut));
 
         let diffInMinutes = moment(checkOutDate).diff(checkInDate, 'minutes');

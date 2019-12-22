@@ -2,6 +2,7 @@ let days = [];
 let actual = planned = 0;
 let vacations = [];
 let weekEnds= [];
+let hoursPerDay = 0;
 document.getElementById('sheet').addEventListener('change',function(e){
 	if(!e.target.files || !e.target.files.length){
 		return ;
@@ -47,18 +48,22 @@ document.getElementById('vacations').addEventListener('change',function(e){
 
 });
 document.getElementById('done').addEventListener('click',function(e){
- let t = document.getElementsByName('weekends');
-  for (var i=0; i<t.length; i++) {
-	  if(t[i].checked){
-		  weekEnds.push(t[i].value *1);
-	  }
+	hoursPerDay = document.getElementById('work_per_day').value * 1;
+	let weekEndDays = document.getElementsByName('weekends');
+	for (var i=0; i<weekEndDays.length; i++) {
+		if(weekEndDays[i].checked){
+			  weekEnds.push(weekEndDays[i].value *1);
+		 }
     }
 	for(let day of days){
+		if(!day.checkIn || !day.checkOut){
+			continue ;
+		}
 		dateCheckin = moment(new Date(day.date + ' ' +day.checkIn));
 		dateCheckOut = moment(new Date(day.date + ' ' +day.checkOut));
 		dateDiffMinutes = dateCheckOut.diff(dateCheckin,'minutes');
 		if(!dayIsOff(day.date) && dateDiffMinutes > 0){
-			planned+= 8 * 60 ;
+			planned+= hoursPerDay * 60 ;
 		}
 		if( dateDiffMinutes >= 0){
 			actual+= dateDiffMinutes ;
